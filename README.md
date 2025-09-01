@@ -18,16 +18,18 @@ Let's walk through the steps:
    ```
    to create the attestation on the public-good sigstore instance. Note: if you have private repositories, you'll have to enable sigstore in your settings.
 3. On prefix.dev we have configured trusted publishing to allow uploads from: prefix-dev / sigstore-example / action.yaml.
-4. The package and attestation are uploaded (with trusted publishing, no API key is needed!) to prefix.dev:
+   <img width="745" height="152" alt="Screenshot 2025-09-01 at 13 28 35" src="https://github.com/user-attachments/assets/8119f636-377a-48c9-8354-40226d2ea6b5" />
+
+5. The package and attestation are uploaded (with trusted publishing, no API key is needed!) to prefix.dev:
    ```yaml
       # Note: no API keys needed because we have configured a trusted publisher!
       - name: Upload the package
         run: |
           rattler-build upload prefix -c sigstore-example ./output/**/*.conda --attestation ${{ steps.attest.outputs.bundle-path }}
    ```
-5. The package can be found on prefix.dev: https://prefix.dev/channels/sigstore-example/packages/signed-package
-6. The signature can be found on prefix.dev, on [Github](https://github.com/prefix-dev/sigstore-example/attestations/10209596) and on the [sigstore public good instance](https://search.sigstore.dev/?logIndex=456061810).
-7. The attestation can be verified using 
+6. The package can be found on prefix.dev: https://prefix.dev/channels/sigstore-example/packages/signed-package
+7. The signature can be found on prefix.dev, on [Github](https://github.com/prefix-dev/sigstore-example/attestations/10209596) and on the [sigstore public good instance](https://search.sigstore.dev/?logIndex=456061810).
+8. The attestation can be verified using 
    ```sh
    # In case you don't have `gh` and `curl` installed yet, you can globally install it easily with pixi:
    $ pixi global install gh curl
@@ -55,4 +57,4 @@ Let's walk through the steps:
     - Signer repo:.... prefix-dev/sigstore-example
     - Signer workflow: .github/workflows/action.yaml@refs/heads/main
    ```
-8. There are also a number of other ways to verify the attestion, for example using `cosign` or `sigstore-python`.
+9. There are also a number of other ways to verify the attestion, for example using `cosign` or `sigstore-python`.
