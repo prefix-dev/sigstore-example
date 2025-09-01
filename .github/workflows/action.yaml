@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   build:
+    # These permissions are needed to create a sigstore certificate.
     permissions:
       id-token: write
       contents: read
