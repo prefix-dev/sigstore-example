@@ -1,0 +1,16 @@
+[project]
+authors = ["Wolf Vollprecht <w.vollprecht@gmail.com>"]
+channels = ["conda-forge"]
+description = "Add a short description here"
+name = "sigstore-test"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+python = "3.12.*"
+
+[pypi-dependencies]
+betterproto = "==2.0.0b6"
+sigstore = ">=3.4.0"
