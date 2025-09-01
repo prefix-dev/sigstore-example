@@ -30,4 +30,4 @@ jobs:
       # Note: no API keys needed because we have configured a trusted publisher!
       - name: Upload the package
         run: |
-          rattler-build upload prefix -c sigstore-example ./output/**/*.conda --attestation ${{ steps.attest.outputs.bundle-path }}
+          rattler-build upload prefix --skip-existing -c sigstore-example ./output/**/*.conda --attestation ${{ steps.attest.outputs.bundle-path }}
