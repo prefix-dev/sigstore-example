@@ -36,5 +36,5 @@ jobs:
         run: |
           rattler-build upload prefix --skip-existing \
             --url https://preview-proven-spider.prefix.dev/ \
-            -c sigstore-example ./output/**/*.conda \
+            -c wolf-channel ./output/**/*.conda \
             --attestation ${{ steps.attest.outputs.bundle-path }}
