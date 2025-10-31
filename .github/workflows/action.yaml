@@ -5,6 +5,12 @@ on:
     branches:
       - test
       - main
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Package version to build'
+        required: true
+        type: string
 
 jobs:
   build:
@@ -18,6 +24,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Update recipe version
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          sed -i 's/version: ".*"/version: "${{ github.event.inputs.version }}"/' conda.recipe/recipe.yaml
+          cat conda.recipe/recipe.yaml
 
       - name: Build conda package
         uses: prefix-dev/rattler-build-action@v0.2.34
