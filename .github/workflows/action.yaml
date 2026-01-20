@@ -38,6 +38,8 @@ jobs:
       # Get rattler-build, but actually ignore the build output from it
       - name: Build conda package
         uses: prefix-dev/rattler-build-action@v0.2.34
+        with:
+          rattler-build-version: 'v0.55.1'
 
       # Note: no API keys needed because we have configured a trusted publisher!
       - name: Upload the package
