@@ -11,16 +11,6 @@ on:
         description: 'Package version to build'
         required: true
         type: string
-      channel:
-        description: 'Channel to publish to'
-        required: true
-        type: string
-        default: 'wolf-channel'
-      server:
-        description: 'Prefix server URL'
-        required: true
-        type: string
-        default: 'https://beta.prefix.dev/'
 
 jobs:
   build:
@@ -35,16 +25,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Get rattler-build, but actually ignore the build output from it
+      - name: Update recipe version
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          sed -i 's/version: ".*"/version: "${{ github.event.inputs.version }}"/' conda.recipe/recipe.yaml
+          cat conda.recipe/recipe.yaml
+
       - name: Build conda package
         uses: prefix-dev/rattler-build-action@v0.2.34
+
+      # We are using Github's official attest action to create a sigstore certificate with
+      # the Conda predicate.
+      - uses: actions/attest@v1
+        id: attest
         with:
-          rattler-build-version: 'v0.55.1'
+          subject-path: "**/*.conda"
+          predicate-type: "https://schemas.conda.org/attestations-publish-1.schema.json"
+          predicate: "{\"targetChannel\": \"https://beta.prefix.dev/wolf-channel\"}"
 
       # Note: no API keys needed because we have configured a trusted publisher!
       - name: Upload the package
         run: |
-          rattler-build publish ./conda.recipe \
-            --build-number=+1 \
-            --to ${{ inputs.server || 'https://beta.prefix.dev/' }}/${{ inputs.channel || 'wolf-channel' }} \
-            --generate-attestation
+          rattler-build upload prefix --skip-existing \
+            --url https://beta.prefix.dev/ \
+            -c wolf-channel ./output/**/*.conda \
+            --attestation ${{ steps.attest.outputs.bundle-path }}
