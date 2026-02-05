@@ -33,15 +33,8 @@ jobs:
 
       - name: Build conda package
         uses: prefix-dev/rattler-build-action@v0.2.34
-
-      # We are using Github's official attest action to create a sigstore certificate with
-      # the Conda predicate.
-      - uses: actions/attest@v1
-        id: attest
         with:
-          subject-path: "**/*.conda"
-          predicate-type: "https://schemas.conda.org/attestations-publish-1.schema.json"
-          predicate: "{\"targetChannel\": \"https://beta.prefix.dev/test-ruben\"}"
+          rattler-build-version: "0.57.0"
 
       # Note: no API keys needed because we have configured a trusted publisher!
       - name: Upload the package
@@ -49,4 +42,4 @@ jobs:
           rattler-build upload prefix --skip-existing \
             --url https://beta.prefix.dev/ \
             -c test-ruben ./output/**/*.conda \
-            --attestation ${{ steps.attest.outputs.bundle-path }}
+            --generate-attestation
