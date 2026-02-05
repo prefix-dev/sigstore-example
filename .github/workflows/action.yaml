@@ -41,5 +41,5 @@ jobs:
         run: |
           rattler-build upload prefix --skip-existing \
             --url https://beta.prefix.dev/ \
-            -c test-ruben ./output/**/*.conda \
+            -c wolf-channel ./output/**/*.conda \
             --generate-attestation
