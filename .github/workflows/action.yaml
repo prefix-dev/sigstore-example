@@ -39,6 +39,9 @@ jobs:
       # Note: no API keys needed because we have configured a trusted publisher!
       - name: Upload the package
         run: |
+          pwd
+          ls -al 
+          ls -al conda.recipe/
           rattler-build publish --recipe ./conda.recipe/recipe.yaml \
             --to https://beta.prefix.dev/wolf-channel \
             --build-number=+1 \
