@@ -45,4 +45,5 @@ jobs:
           cd conda.recipe/
           rattler-build publish \
             --to https://beta.prefix.dev/wolf-channel \
+            --build-number=+1 \
             --generate-attestation
