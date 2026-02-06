@@ -34,16 +34,12 @@ jobs:
       - name: Build conda package
         uses: prefix-dev/rattler-build-action@v0.2.34
         with:
-          rattler-build-version: "v0.57.0"
+          rattler-build-version: "v0.57.1"
 
       # Note: no API keys needed because we have configured a trusted publisher!
       - name: Upload the package
         run: |
-          pwd
-          ls -al 
-          ls -al conda.recipe/
-          cd conda.recipe/
-          rattler-build publish \
+          rattler-build publish --recipe ./conda.recipe \
             --to https://beta.prefix.dev/wolf-channel \
             --build-number=+1 \
             --generate-attestation
